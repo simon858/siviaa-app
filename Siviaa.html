@@ -1,0 +1,2621 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Siviaa · Copilote Financier Pixel Art</title>
+  <meta name="theme-color" content="#5300e8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ========================================================
+       1. CHARTE GRAPHIQUE 100% PIXEL ART (SANS DÉGRADÉS NI GLASS)
+       ======================================================== */
+    :root {
+      /* Palette FinTech Solide & Nette */
+      --c-purple-dark: #27006c;
+      --c-purple-base: #5300e8;
+      --c-purple-light: #7c2dff;
+      --c-purple-bg: #4400be;
+      --c-yellow: #ffd000;
+      --c-yellow-dark: #b88600;
+      --c-pink: #ff2a85;
+      --c-pink-dark: #b3004f;
+      --c-mint: #00e589;
+      --c-mint-dark: #008f55;
+      --c-cyan: #00d2ff;
+      --c-dark: #150928;
+      --c-white: #ffffff;
+      --c-cream: #faf7ff;
+      --c-grid-line: #dfd6f5;
+      --c-gray-pixel: #9e91b8;
+      --c-red-heart: #ff3355;
+
+      /* Typographie */
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-body: 'Space Mono', monospace, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      image-rendering: pixelated;
+    }
+
+    body {
+      background-color: var(--c-dark);
+      color: var(--c-dark);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: 
+        linear-gradient(rgba(83, 0, 232, 0.4) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(83, 0, 232, 0.4) 2px, transparent 2px);
+      background-size: 24px 24px;
+      overflow-x: hidden;
+    }
+
+    /* ENCADREMENT SMARTPHONE RETRO */
+    .app-device-frame {
+      width: 100%;
+      max-width: 420px;
+      height: 860px;
+      background: var(--c-purple-bg);
+      border: 4px solid #000000;
+      box-shadow: 
+        8px 8px 0px #000000,
+        0 0 0 4px var(--c-purple-dark);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* BARRE D'ÉTAT RETRO PIXEL */
+    .pixel-status-bar {
+      height: 38px;
+      background: #000000;
+      color: var(--c-white);
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-pixel);
+      font-size: 9px;
+      border-bottom: 3px solid var(--c-purple-dark);
+      flex-shrink: 0;
+      z-index: 50;
+    }
+
+    /* ENTÊTE PRINCIPAL DE JEU SIVIAA */
+    .pixel-app-header {
+      background: var(--c-purple-base);
+      border-bottom: 4px solid var(--c-purple-dark);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 40;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .pixel-wordmark {
+      font-family: var(--font-pixel);
+      font-size: 14px;
+      color: var(--c-white);
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 0px var(--c-purple-dark);
+    }
+
+    .stats-tray {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pixel-badge-stat {
+      background: #000000;
+      border: 2px solid var(--c-purple-dark);
+      padding: 4px 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-family: var(--font-pixel);
+      font-size: 8px;
+      color: var(--c-white);
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+    }
+
+    .pixel-badge-stat.gems { color: var(--c-yellow); border-color: var(--c-yellow-dark); }
+    .pixel-badge-stat.streak { color: #ff8800; border-color: #aa5500; }
+    .pixel-badge-stat.hearts { color: var(--c-pink); border-color: var(--c-pink-dark); }
+
+    /* CONTENEUR DE PAGES */
+    .app-viewport {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: var(--c-purple-bg);
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.08) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 2px, transparent 2px);
+      background-size: 20px 20px;
+      padding-bottom: 78px;
+      scrollbar-width: none;
+    }
+    .app-viewport::-webkit-scrollbar { display: none; }
+
+    /* CADRES PIXEL REUTILISABLES */
+    .p-card {
+      background: var(--c-white);
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      padding: 12px;
+      margin: 10px 14px;
+      position: relative;
+    }
+
+    .p-card-dark {
+      background: var(--c-purple-dark);
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      color: var(--c-white);
+      padding: 12px;
+      margin: 10px 14px;
+    }
+
+    .p-card-yellow {
+      background: var(--c-yellow);
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      color: #000000;
+      padding: 12px;
+      margin: 10px 14px;
+    }
+
+    /* BOUTONS PIXEL CHUNKY (AVEC ENFONCEMENT RÉEL) */
+    .p-btn {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      padding: 12px 14px;
+      border: 3px solid #000000;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 0px #000000;
+      transition: transform 0.06s ease, box-shadow 0.06s ease;
+      text-decoration: none;
+      user-select: none;
+    }
+
+    .p-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0px #000000;
+    }
+
+    .p-btn-yellow {
+      background: var(--c-yellow);
+      color: #000000;
+    }
+
+    .p-btn-purple {
+      background: var(--c-purple-base);
+      color: var(--c-white);
+    }
+
+    .p-btn-mint {
+      background: var(--c-mint);
+      color: #000000;
+    }
+
+    .p-btn-white {
+      background: var(--c-white);
+      color: #000000;
+    }
+
+    .p-btn:disabled {
+      background: #777;
+      color: #ccc;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* BARRE DE NAVIGATION EN BAS EN PIXEL ART */
+    .pixel-bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 68px;
+      background: #000000;
+      border-top: 4px solid var(--c-purple-dark);
+      display: flex;
+      align-items: stretch;
+      justify-content: space-around;
+      z-index: 50;
+      padding: 4px;
+    }
+
+    .nav-tab-btn {
+      flex: 1;
+      background: transparent;
+      border: 2px solid transparent;
+      color: var(--c-gray-pixel);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
+      font-family: var(--font-pixel);
+      font-size: 7px;
+      text-transform: uppercase;
+      transition: all 0.1s;
+    }
+
+    .nav-tab-btn.active {
+      background: var(--c-purple-dark);
+      color: var(--c-yellow);
+      border-color: var(--c-purple-base);
+      box-shadow: inset 0 2px 0 var(--c-yellow);
+    }
+
+    .nav-tab-btn .tab-ico {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* ========================================================
+       2. ÉCRAN 1 : PARCOURS DUOLINGO (CHEMIN PIXEL ART)
+       ======================================================== */
+    .view-screen {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .view-screen.active {
+      display: flex;
+    }
+
+    /* BANDEAU DE NIVEAU PIXEL */
+    .pixel-level-banner {
+      background: var(--c-purple-dark);
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      margin: 12px 14px 6px;
+      padding: 10px 12px;
+      color: var(--c-white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .level-txt-top {
+      font-family: var(--font-pixel);
+      font-size: 8px;
+      color: var(--c-yellow);
+      margin-bottom: 4px;
+    }
+
+    .level-txt-main {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      line-height: 1.3;
+    }
+
+    /* LE CHEMIN SINUEUX EN BLOCS PIXEL */
+    .path-board {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0 30px;
+      width: 100%;
+    }
+
+    .path-row {
+      width: 100%;
+      height: 84px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .path-row.center { justify-content: center; }
+    .path-row.left { justify-content: flex-start; padding-left: 64px; }
+    .path-row.right { justify-content: flex-end; padding-right: 64px; }
+
+    /* NŒUD DE JEU PIXEL ART (CUBIQUE AVEC ÉPAISSEUR 3D) */
+    .pixel-node {
+      width: 62px;
+      height: 56px;
+      border: 3px solid #000000;
+      box-shadow: 0 6px 0px #000000;
+      background: var(--c-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.05s, box-shadow 0.05s;
+    }
+
+    .pixel-node:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0px #000000;
+    }
+
+    .pixel-node.done {
+      background: var(--c-mint);
+      border-color: #000000;
+    }
+
+    .pixel-node.active-now {
+      background: var(--c-yellow);
+      border-color: #000000;
+      box-shadow: 0 6px 0px #000000, 0 0 0 3px var(--c-white);
+    }
+
+    .pixel-node.chest {
+      background: #ffaa00;
+    }
+
+    .pixel-node.locked {
+      background: #4a3e63;
+      border-color: #241c36;
+      box-shadow: 0 4px 0px #1a1426;
+      cursor: not-allowed;
+      opacity: 0.8;
+    }
+
+    /* BULLE PIXEL ART « COMMENCER ! » */
+    .pixel-bubble {
+      position: absolute;
+      top: -34px;
+      background: var(--c-white);
+      border: 3px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      font-family: var(--font-pixel);
+      font-size: 8px;
+      color: #000000;
+      padding: 5px 8px;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: pixelBounce 1.2s infinite alternate steps(2);
+    }
+
+    .pixel-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid #000000;
+    }
+
+    @keyframes pixelBounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-4px); }
+    }
+
+    /* SÉPARATEUR DE MONDE PIXEL */
+    .world-divider {
+      width: 86%;
+      margin: 14px 0;
+      padding: 6px;
+      background: #000000;
+      border: 2px solid var(--c-purple-dark);
+      color: var(--c-yellow);
+      font-family: var(--font-pixel);
+      font-size: 7px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ========================================================
+       3. ÉCRAN 2 : QUIZ PIXEL ART (CONFORME À LA MAQUETTE)
+       ======================================================== */
+    .quiz-view-screen {
+      background: var(--c-purple-base);
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 12px 14px;
+      color: var(--c-white);
+    }
+
+    .quiz-pixel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .btn-pixel-back {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      background: var(--c-purple-dark);
+      border: 2px solid #000000;
+      color: var(--c-white);
+      padding: 6px 10px;
+      box-shadow: 2px 2px 0px #000000;
+      cursor: pointer;
+    }
+
+    .pixel-timer-box {
+      background: var(--c-yellow);
+      border: 2px solid #000000;
+      box-shadow: 2px 2px 0px #000000;
+      color: #000000;
+      font-family: var(--font-pixel);
+      font-size: 9px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pixel-step-counter {
+      font-family: var(--font-pixel);
+      font-size: 8px;
+      color: var(--c-white);
+      background: #000000;
+      padding: 6px 8px;
+      border: 2px solid var(--c-purple-dark);
+    }
+
+    /* CARTE ILLUSTRÉE PIXEL */
+    .quiz-scene-box {
+      background: var(--c-white);
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0 12px;
+      position: relative;
+    }
+
+    .quiz-q-title {
+      font-family: var(--font-pixel);
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--c-white);
+      text-shadow: 2px 2px 0px #000000;
+      margin-bottom: 6px;
+    }
+
+    .quiz-q-sub {
+      font-size: 11px;
+      color: var(--c-gray-pixel);
+      margin-bottom: 10px;
+      font-family: var(--font-body);
+    }
+
+    /* CHOIX DU QUIZ EN BLOCS RETRO */
+    .pixel-options-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .pixel-choice-card {
+      background: var(--c-white);
+      border: 3px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      padding: 10px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #000000;
+      font-weight: 700;
+      line-height: 1.35;
+      transition: all 0.05s;
+    }
+
+    .pixel-choice-card:hover {
+      background: #faf5ff;
+    }
+
+    .pixel-choice-card.selected {
+      background: var(--c-yellow);
+      border-color: #000000;
+      box-shadow: 3px 3px 0px #000000;
+    }
+
+    .pixel-choice-card.is-correct {
+      background: var(--c-mint) !important;
+      color: #000000 !important;
+    }
+
+    .pixel-choice-card.is-wrong {
+      background: var(--c-pink) !important;
+      color: var(--c-white) !important;
+    }
+
+    .pixel-radio-sq {
+      width: 14px;
+      height: 14px;
+      border: 2px solid #000000;
+      background: var(--c-white);
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-pixel);
+      font-size: 8px;
+    }
+
+    .pixel-choice-card.selected .pixel-radio-sq {
+      background: #000000;
+      color: var(--c-white);
+    }
+
+    /* ENCADRÉ FEEDBACK APRÈS RÉPONSE */
+    .quiz-hint-box {
+      background: #000000;
+      border: 3px solid var(--c-yellow);
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.4;
+      color: var(--c-white);
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    /* ========================================================
+       4. ÉCRAN 3 : BUDGET, POCHETTES ET SORTIES
+       ======================================================== */
+    .budget-screen-inner {
+      padding: 6px 0;
+    }
+
+    .screen-header-banner {
+      background: #000000;
+      border: 3px solid var(--c-purple-dark);
+      padding: 10px 14px;
+      margin: 10px 14px;
+      color: var(--c-white);
+    }
+
+    .screen-header-banner h1 {
+      font-family: var(--font-pixel);
+      font-size: 13px;
+      color: var(--c-yellow);
+      margin-bottom: 4px;
+    }
+
+    .screen-header-banner p {
+      font-size: 11px;
+      color: var(--c-gray-pixel);
+    }
+
+    /* BARRE DE DÉPENSES SOLIDE PIXELISÉE */
+    .pixel-gauge-frame {
+      border: 3px solid #000000;
+      height: 18px;
+      background: #000000;
+      display: flex;
+      margin: 8px 0;
+      overflow: hidden;
+    }
+
+    .gauge-block {
+      height: 100%;
+    }
+
+    /* POCHETTES D'ÉPARGNE */
+    .pochette-pixel-row {
+      background: var(--c-white);
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .pochette-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .pochette-name {
+      font-family: var(--font-pixel);
+      font-size: 9px;
+      color: #000000;
+    }
+
+    .pochette-tag {
+      font-family: var(--font-pixel);
+      font-size: 7px;
+      padding: 3px 5px;
+      border: 1px solid #000000;
+      background: var(--c-yellow);
+    }
+
+    .pochette-tag.p1 { background: #ff5555; color: #fff; }
+    .pochette-tag.p2 { background: var(--c-yellow); color: #000; }
+    .pochette-tag.p3 { background: var(--c-mint); color: #000; }
+
+    .pochette-track {
+      height: 12px;
+      border: 2px solid #000000;
+      background: #e5ddf5;
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .pochette-fill {
+      height: 100%;
+      background: var(--c-purple-base);
+    }
+
+    .pochette-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* SLIDER SORTIE PIXEL */
+    .pixel-range-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 14px;
+      background: #000000;
+      border: 2px solid var(--c-purple-dark);
+      outline: none;
+      margin: 10px 0;
+    }
+
+    .pixel-range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 24px;
+      background: var(--c-yellow);
+      border: 2px solid #000000;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px #000000;
+    }
+
+    /* ========================================================
+       5. ÉCRAN 4 : RADAR ABONNEMENTS PIXEL
+       ======================================================== */
+    .sub-pixel-item {
+      background: var(--c-white);
+      border: 3px solid #000000;
+      box-shadow: 4px 4px 0px #000000;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .sub-pixel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .sub-brand {
+      font-family: var(--font-pixel);
+      font-size: 9px;
+    }
+
+    .sub-price {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      color: var(--c-purple-dark);
+    }
+
+    .sub-pixel-tip {
+      background: #fff8db;
+      border-left: 3px solid var(--c-yellow-dark);
+      padding: 6px;
+      font-size: 11px;
+      line-height: 1.35;
+      color: #593e00;
+      margin-top: 6px;
+    }
+
+    /* ========================================================
+       6. ÉCRAN 5 : COPILOTE IA DÉTECTIVE PIXEL
+       ======================================================== */
+    .copilot-screen-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 10px 14px;
+    }
+
+    .chat-bubble-pixel {
+      background: var(--c-white);
+      border: 3px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      padding: 10px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 1.4;
+      max-width: 90%;
+    }
+
+    .chat-bubble-pixel.bot {
+      align-self: flex-start;
+      background: var(--c-white);
+      border-left: 6px solid var(--c-purple-base);
+    }
+
+    .chat-bubble-pixel.user {
+      align-self: flex-end;
+      background: var(--c-yellow);
+      border-right: 6px solid #000000;
+    }
+
+    .pixel-quick-chip {
+      background: #000000;
+      border: 2px solid var(--c-yellow);
+      color: var(--c-white);
+      font-family: var(--font-pixel);
+      font-size: 7px;
+      padding: 6px 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      margin-right: 6px;
+    }
+
+    .pixel-input-field {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 12px;
+      padding: 10px;
+      border: 3px solid #000000;
+      box-shadow: 3px 3px 0px #000000;
+      outline: none;
+      background: var(--c-white);
+    }
+
+    /* ========================================================
+       7. MODALE RÉTRO PIXEL
+       ======================================================== */
+    .pixel-dialog-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .pixel-dialog-box {
+      background: var(--c-white);
+      border: 4px solid #000000;
+      box-shadow: 8px 8px 0px #000000;
+      width: 100%;
+      max-width: 360px;
+      padding: 16px;
+      max-height: 90%;
+      overflow-y: auto;
+    }
+
+    .pixel-tag-green {
+      background: var(--c-mint);
+      color: #000000;
+      font-family: var(--font-pixel);
+      font-size: 7px;
+      padding: 3px 6px;
+      border: 1px solid #000000;
+      box-shadow: 1px 1px 0px #000000;
+    }
+
+    .pixel-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-body);
+      font-size: 9px;
+      border: 2px solid #000000;
+      margin: 10px 0;
+    }
+
+    .pixel-table th {
+      background: var(--c-purple-dark);
+      color: #ffffff;
+      font-family: var(--font-pixel);
+      font-size: 7px;
+      padding: 6px 3px;
+      border: 1px solid #000000;
+      text-align: center;
+    }
+
+    .pixel-table td {
+      padding: 5px 3px;
+      border: 1px solid #000000;
+      background: #ffffff;
+      text-align: center;
+    }
+
+    .pixel-table td:first-child {
+      text-align: left;
+      font-weight: 700;
+      font-size: 8px;
+    }
+
+    .tag-oui {
+      background: var(--c-mint);
+      color: #000000;
+      font-family: var(--font-pixel);
+      font-size: 6px;
+      padding: 2px 4px;
+      border: 1px solid #000000;
+      display: inline-block;
+    }
+
+    .tag-non {
+      background: var(--c-pink);
+      color: #ffffff;
+      font-family: var(--font-pixel);
+      font-size: 6px;
+      padding: 2px 4px;
+      border: 1px solid #000000;
+      display: inline-block;
+    }
+
+    /* RESPONSIVE FULLSCREEN SUR VRAI SMARTPHONE */
+    @media (max-width: 500px) {
+      body {
+        background: #000000;
+        padding: 0;
+      }
+      .app-device-frame {
+        max-width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        border: none;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SMARTPHONE RETRO FRAME -->
+  <div class="app-device-frame">
+
+    <!-- BARRE DE STATUT RETRO -->
+    <div class="pixel-status-bar">
+      <span>09:41</span>
+      <span>[ SIVIAA OS ]</span>
+      <span id="sound-btn" onclick="toggleSound()" style="cursor:pointer;">🔊 SON:ON</span>
+    </div>
+
+    <!-- ENTÊTE DE JEU AVEC STATS PIXEL -->
+    <div class="pixel-app-header">
+      <div class="brand-group" onclick="openManifestoModal()" title="Cliquer pour découvrir le Manifeste Siviaa">
+        <canvas id="mascot-header" width="24" height="24"></canvas>
+        <div class="pixel-wordmark">SIVIAA</div>
+        <span style="font-family:var(--font-pixel); font-size:7px; background:#000; color:var(--c-yellow); padding:2px 4px; border:1px solid var(--c-yellow-dark);" title="Manifeste & Définition">?</span>
+      </div>
+      <div class="stats-tray">
+        <div class="pixel-badge-stat streak" title="Série de jours">
+          <span>🔥</span> <span id="stat-streak">5</span>J
+        </div>
+        <div class="pixel-badge-stat gems" title="Gemmes gagnées">
+          <span>💎</span> <span id="stat-gems">320</span>
+        </div>
+        <div class="pixel-badge-stat hearts" title="Vies">
+          <span>❤️</span> <span id="stat-hearts">5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENEUR DES ÉCRANS -->
+    <div class="app-viewport" id="app-viewport">
+
+      <!-- ======================================================== -->
+      <!-- VUE 1 : PARCOURS DUOLINGO (CHEMIN PIXEL ART) -->
+      <!-- ======================================================== -->
+      <div class="view-screen active" id="view-parcours">
+        
+        <!-- BANDEAU DU MODULE ACTIF -->
+        <div class="pixel-level-banner" onclick="openModuleInfo()">
+          <div>
+            <div class="level-txt-top">MONDE 01 · LES FONDATIONS</div>
+            <div class="level-txt-main">Comprendre son argent</div>
+          </div>
+          <button class="p-btn p-btn-yellow" style="padding:6px 8px; font-size:8px;">INFO</button>
+        </div>
+
+        <!-- CHEMIN DUOLINGO PIXEL -->
+        <div class="path-board">
+          
+          <!-- LIGNE 1 : COFFRE BONUS (CENTRE) -->
+          <div class="path-row center">
+            <button class="pixel-node chest" onclick="openChestBonus()" title="Coffre bonus">
+              <svg width="28" height="24" viewBox="0 0 14 12" shape-rendering="crispEdges">
+                <rect x="2" y="1" width="10" height="4" fill="#693b00" />
+                <rect x="1" y="4" width="12" height="7" fill="#995600" />
+                <rect x="0" y="4" width="14" height="2" fill="#ffd000" />
+                <rect x="6" y="5" width="2" height="3" fill="#ffffff" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- LIGNE 2 : QUIZ 1 (GAUCHE - RÉUSSI) -->
+          <div class="path-row left">
+            <button class="pixel-node done" id="node-q-0" onclick="startQuiz(0)" title="Quiz 01 : Les bases du budget">
+              <svg width="22" height="20" viewBox="0 0 11 10" shape-rendering="crispEdges">
+                <rect x="1" y="5" width="2" height="2" fill="#000000" />
+                <rect x="3" y="7" width="2" height="2" fill="#000000" />
+                <rect x="5" y="5" width="2" height="2" fill="#000000" />
+                <rect x="7" y="3" width="2" height="2" fill="#000000" />
+                <rect x="9" y="1" width="2" height="2" fill="#000000" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- LIGNE 3 : FICHE MÉMO (DROITE) -->
+          <div class="path-row right">
+            <button class="pixel-node" onclick="openMemo503020()" title="Fiche mémo : Règle 50/30/20">
+              <svg width="22" height="22" viewBox="0 0 11 11" shape-rendering="crispEdges">
+                <rect x="1" y="1" width="9" height="9" fill="#5300e8" />
+                <rect x="3" y="3" width="5" height="1" fill="#ffffff" />
+                <rect x="3" y="5" width="5" height="1" fill="#ffffff" />
+                <rect x="3" y="7" width="3" height="1" fill="#ffffff" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- LIGNE 4 : QUIZ 2 (CENTRE - ACTIF AVEC BULLE) -->
+          <div class="path-row center">
+            <div class="pixel-bubble">COMMENCER !</div>
+            <button class="pixel-node active-now" id="node-q-1" onclick="startQuiz(1)" title="Quiz 02 : Le réflexe épargne">
+              <svg width="24" height="20" viewBox="0 0 12 10" shape-rendering="crispEdges">
+                <rect x="0" y="2" width="2" height="6" fill="#000000" />
+                <rect x="2" y="3" width="2" height="4" fill="#000000" />
+                <rect x="4" y="4" width="4" height="2" fill="#000000" />
+                <rect x="8" y="3" width="2" height="4" fill="#000000" />
+                <rect x="10" y="2" width="2" height="6" fill="#000000" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- SÉPARATEUR DE NIVEAU -->
+          <div class="world-divider">
+            [ NIVEAU 2 · FISCALITÉ & PROJETS ]
+          </div>
+
+          <!-- LIGNE 5 : QUIZ 3 (GAUCHE) -->
+          <div class="path-row left">
+            <button class="pixel-node" id="node-q-2" onclick="startQuiz(2)" title="Quiz 03 : Décoder les impôts">
+              <svg width="22" height="22" viewBox="0 0 11 11" shape-rendering="crispEdges">
+                <rect x="1" y="0" width="9" height="11" fill="#ffffff" />
+                <rect x="0" y="0" width="11" height="11" fill="none" stroke="#000" stroke-width="1" />
+                <rect x="3" y="3" width="5" height="1" fill="#000000" />
+                <rect x="3" y="5" width="5" height="1" fill="#ff2a85" />
+                <rect x="3" y="7" width="3" height="1" fill="#000000" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- LIGNE 6 : DÉFI PRO (DROITE - VERROUILLÉ) -->
+          <div class="path-row right">
+            <button class="pixel-node locked" onclick="lockedPrompt()" title="Défi : Lancer sa boîte">
+              <svg width="20" height="22" viewBox="0 0 10 11" shape-rendering="crispEdges">
+                <rect x="3" y="0" width="4" height="5" fill="#ffffff" />
+                <rect x="4" y="1" width="2" height="4" fill="#4a3e63" />
+                <rect x="1" y="4" width="8" height="7" fill="#ffd000" />
+                <rect x="4" y="6" width="2" height="3" fill="#000000" />
+              </svg>
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- VUE 2 : QUIZ PIXEL ART (MATCH MAQUETTE) -->
+      <!-- ======================================================== -->
+      <div class="view-screen" id="view-quiz">
+        <div class="quiz-view-screen">
+          
+          <div class="quiz-pixel-top">
+            <button class="btn-pixel-back" onclick="quitQuiz()">◄ RETOUR</button>
+            <div class="pixel-timer-box">
+              <span>⏱</span> <span id="q-timer-val">30S</span>
+            </div>
+            <div class="pixel-step-counter" id="q-step-txt">1 / 3</div>
+          </div>
+
+          <div class="quiz-q-title" id="q-title-txt">C'est quoi un salaire ?</div>
+          <div class="quiz-q-sub" id="q-sub-txt">Les bases de la rémunération du travail</div>
+
+          <!-- SCÈNE ILLUSTRÉE EN PIXEL ART -->
+          <div class="quiz-scene-box">
+            <canvas id="quiz-scene-canvas" width="160" height="110"></canvas>
+          </div>
+
+          <!-- PILE DE CHOIX EN BLOCS NETS -->
+          <div class="pixel-options-stack" id="q-options-box">
+            <!-- Rempli par JavaScript -->
+          </div>
+
+          <!-- EXPLICATION PÉDAGOGIQUE -->
+          <div class="quiz-hint-box" id="q-hint-box"></div>
+
+          <!-- BOUTON D'ACTION PIXEL CHUNKY -->
+          <button class="p-btn p-btn-white" id="q-action-btn" onclick="handleQuizSubmit()" disabled style="width:100%; margin-top:auto; font-size:11px;">
+            CONFIRMER
+          </button>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- VUE 3 : MON BUDGET & POCHETTES DE PRIORITÉS -->
+      <!-- ======================================================== -->
+      <div class="view-screen" id="view-budget">
+        <div class="budget-screen-inner">
+          
+          <div class="screen-header-banner">
+            <h1>MON BUDGET PIXEL</h1>
+            <p>Répartition mensuelle et gestion par enveloppes</p>
+          </div>
+
+          <!-- RÉSUMÉ DU SOLDE ET JAUGE -->
+          <div class="p-card-dark">
+            <div style="font-family:var(--font-pixel); font-size:8px; color:var(--c-yellow); margin-bottom:4px;">DÉPENSES DU MOIS</div>
+            <div style="font-family:var(--font-pixel); font-size:18px; margin-bottom:8px;" id="b-total-spend">795,00 €</div>
+
+            <!-- Jauge en blocs pixel -->
+            <div class="pixel-gauge-frame">
+              <div class="gauge-block" style="width:55%; background:var(--c-yellow);" title="Logement (450€)"></div>
+              <div class="gauge-block" style="width:22%; background:var(--c-mint);" title="Courses (180€)"></div>
+              <div class="gauge-block" style="width:13%; background:var(--c-cyan);" title="Transport (75€)"></div>
+              <div class="gauge-block" style="width:10%; background:var(--c-pink);" title="Loisirs (90€)"></div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; font-size:9px; font-weight:700; color:var(--c-cream);">
+              <span>■ LOYER 450€</span>
+              <span>■ COURSES 180€</span>
+              <span>■ SORTIES 90€</span>
+            </div>
+          </div>
+
+          <!-- ENVELOPPES / POCHETTES DE PRIORITÉS -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin:14px 14px 6px;">
+            <div style="font-family:var(--font-pixel); font-size:10px; color:var(--c-white);">POCHETTES DE PRIORITÉ</div>
+            <button class="p-btn p-btn-yellow" style="padding:6px 8px; font-size:8px;" onclick="openNewPochetteDialog()">+ CRÉER</button>
+          </div>
+
+          <div id="pochettes-list-container" style="padding:0 14px;">
+            <!-- Généré par JS -->
+          </div>
+
+          <!-- SIMULATEUR SORTIE ABORDABLE -->
+          <div class="p-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <div style="font-family:var(--font-pixel); font-size:9px; color:#000;">SORTIE DANS MON BUDGET</div>
+              <div style="font-family:var(--font-pixel); font-size:11px; color:var(--c-purple-base);" id="slider-display-val">15 €</div>
+            </div>
+            
+            <input type="range" class="pixel-range-slider" min="0" max="60" step="5" value="15" oninput="onOutingSliderChange(this.value)">
+
+            <div style="background:#f4efff; border:2px solid #000; padding:8px; font-size:11px; line-height:1.4;" id="outing-tip-box">
+              💡 <b>Idée à 15 € :</b> Cinéma avec tarif étudiant (-26 ans) ou goûter gourmand partagé au parc !
+            </div>
+          </div>
+
+          <!-- ACTIONS SÉCURISÉES -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:6px 14px;">
+            <button class="p-btn p-btn-white" onclick="openExpenseDialog()">+ DÉPENSE</button>
+            <button class="p-btn p-btn-purple" onclick="openCSVImportDialog()">📥 IMPORT CSV</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- VUE 4 : RADAR ABONNEMENTS PIXEL -->
+      <!-- ======================================================== -->
+      <div class="view-screen" id="view-radar">
+        <div class="budget-screen-inner">
+          
+          <div class="screen-header-banner">
+            <h1>RADAR ABONNEMENTS</h1>
+            <p>Traque des prélèvements automatiques et alertes</p>
+          </div>
+
+          <!-- CARTE D'ALERTE TOTAL -->
+          <div class="p-card-dark" style="border-left:8px solid var(--c-pink);">
+            <div style="font-family:var(--font-pixel); font-size:8px; color:var(--c-pink); margin-bottom:4px;">PRÉLÈVEMENT TOTAL DÉTECTÉ</div>
+            <div style="font-family:var(--font-pixel); font-size:18px; color:var(--c-white); margin-bottom:4px;" id="subs-sum-val">58,46 € / MOIS</div>
+            <div style="font-size:10px; color:var(--c-gray-pixel);">Soit <b>701,52 € / an</b> qui partent en automatique !</div>
+          </div>
+
+          <div id="subs-list-container" style="padding:0 14px;">
+            <!-- Rempli en JS -->
+          </div>
+
+          <!-- EXPORT CALENDRIER ICS -->
+          <div style="padding:10px 14px 6px;">
+            <button class="p-btn p-btn-yellow" style="width:100%;" onclick="downloadICSFile()">
+              📅 EXPORTER RAPPELS CALENDRIER (.ICS)
+            </button>
+          </div>
+
+          <!-- BANQUES ÉTHIQUES & PARTENAIRES SIVIAA (PITCH SLIDE 5) -->
+          <div style="font-family:var(--font-pixel); font-size:10px; color:var(--c-white); margin:14px 14px 6px;">
+            🌿 BANQUES ÉTHIQUES & BONS PLANS
+          </div>
+          <div style="padding:0 14px 14px; display:flex; flex-direction:column; gap:8px;">
+            <div class="p-card" style="margin:0; cursor:pointer;" onclick="openEthicalBankModal('greengot')">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-family:var(--font-pixel); font-size:9px; color:#000;">🌱 GREEN-GOT</div>
+                <span class="pixel-tag-green">0% FOSSILE</span>
+              </div>
+              <div style="font-size:10px; color:#555; margin-top:4px;">Chaque euro déposé dépollue et finance la transition écologique.</div>
+            </div>
+
+            <div class="p-card" style="margin:0; cursor:pointer;" onclick="openEthicalBankModal('helios')">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-family:var(--font-pixel); font-size:9px; color:#000;">☀️ HELIOS</div>
+                <span class="pixel-tag-green">CLIMAT</span>
+              </div>
+              <div style="font-size:10px; color:#555; margin-top:4px;">La néobanque engagée qui trace et réduit ton empreinte carbone.</div>
+            </div>
+
+            <div class="p-card" style="margin:0; cursor:pointer;" onclick="openEthicalBankModal('lanef')">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-family:var(--font-pixel); font-size:9px; color:#000;">🤝 LA NEF</div>
+                <span class="pixel-tag-green">100% ÉTHIQUE</span>
+              </div>
+              <div style="font-size:10px; color:#555; margin-top:4px;">Coopérative bancaire citoyenne avec transparence totale des crédits.</div>
+            </div>
+
+            <div class="p-card" style="margin:0; cursor:pointer;" onclick="openEthicalBankModal('bnp')">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-family:var(--font-pixel); font-size:9px; color:#000;">🏦 BNP PARIBAS JEUNES</div>
+                <span class="pixel-tag-green">PARTENAIRE</span>
+              </div>
+              <div style="font-size:10px; color:#555; margin-top:4px;">Offres étudiantes, prêt permis à 1€/jour et avances de rentrée.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- VUE 5 : COPILOTE DÉTECTIVE IA -->
+      <!-- ======================================================== -->
+      <div class="view-screen" id="view-copilote">
+        <div class="copilot-screen-inner">
+          
+          <div class="p-card-dark" style="display:flex; align-items:center; gap:12px; margin:0 0 10px;">
+            <canvas id="copilot-avatar-canvas" width="40" height="40"></canvas>
+            <div>
+              <div style="font-family:var(--font-pixel); font-size:10px; color:var(--c-yellow); margin-bottom:2px;">SIVIAA DÉTECTIVE</div>
+              <div style="font-size:10px; color:var(--c-gray-pixel);">Copilote budget, impôts et projets jeunes</div>
+            </div>
+          </div>
+
+          <!-- QUESTIONS RAPIDES PAR PERSONA -->
+          <div id="copilot-chips-container" style="display:flex; overflow-x:auto; padding-bottom:8px; margin-bottom:8px; scrollbar-width:none;">
+            <!-- Rempli dynamiquement par renderCopilotChips selon le Persona actif -->
+          </div>
+
+          <!-- HISTORIQUE DU CHAT -->
+          <div id="chat-stream-box" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; padding-bottom:10px;">
+            <div class="chat-bubble-pixel bot">
+              Salut ! Je suis <b>Siviaa</b>, ton détective financier. Je suis là pour t'éviter les abonnements oubliés et t'aider à garder de l'argent de côté. Quelle est ta question ?
+            </div>
+          </div>
+
+          <!-- SAISIE DU MESSAGE -->
+          <div style="display:flex; gap:6px;">
+            <input type="text" id="chat-input-box" class="pixel-input-field" placeholder="Pose ta question..." onkeydown="if(event.key==='Enter') submitChatMessage()">
+            <button class="p-btn p-btn-yellow" style="padding:8px 12px;" onclick="submitChatMessage()">ENVOYER</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- VUE 6 : PROFIL, PERSONAS & BADGES -->
+      <!-- ======================================================== -->
+      <div class="view-screen" id="view-profil">
+        <div class="budget-screen-inner">
+          
+          <div class="screen-header-banner">
+            <h1>MON PROFIL DÉTECTIVE</h1>
+            <p>Choisis ton persona et consulte tes trophées</p>
+          </div>
+
+          <!-- CARTE PERSONA -->
+          <div class="p-card" style="text-align:center;">
+            <canvas id="profile-avatar-canvas" width="60" height="60" style="margin-bottom:8px;"></canvas>
+            <div style="font-family:var(--font-pixel); font-size:12px; margin-bottom:4px;" id="p-name-txt">Aitana Bonmatí</div>
+            <div style="font-size:11px; color:#555; margin-bottom:12px;" id="p-bio-txt">24 ans · Salariée, veut se lancer seule</div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:12px;">
+              <div style="background:#000; color:var(--c-yellow); font-family:var(--font-pixel); font-size:7px; padding:6px 2px;">
+                <span id="p-xp-txt">90 XP</span>
+              </div>
+              <div style="background:#000; color:var(--c-mint); font-family:var(--font-pixel); font-size:7px; padding:6px 2px;">
+                LIGUE OR
+              </div>
+              <div style="background:#000; color:var(--c-pink); font-family:var(--font-pixel); font-size:7px; padding:6px 2px;">
+                5 JOURS
+              </div>
+            </div>
+
+            <div style="font-family:var(--font-pixel); font-size:8px; margin-bottom:6px;">CHANGER DE PERSONA :</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
+              <button id="btn-persona-aitana" class="p-btn p-btn-yellow" style="font-size:7px; padding:6px 2px;" onclick="setPersonaKey('aitana')">🐥 AITANA</button>
+              <button id="btn-persona-mayulu" class="p-btn p-btn-white" style="font-size:7px; padding:6px 2px;" onclick="setPersonaKey('mayulu')">🌸 MAYULU</button>
+              <button id="btn-persona-theodora" class="p-btn p-btn-white" style="font-size:7px; padding:6px 2px;" onclick="setPersonaKey('theodora')">🕊️ THEODORA</button>
+            </div>
+          </div>
+
+          <!-- GRILLE DE TROPHÉES / BADGES -->
+          <div style="font-family:var(--font-pixel); font-size:10px; color:var(--c-white); margin:12px 14px 6px;">
+            COLLECTION DE BADGES PIXEL
+          </div>
+
+          <div id="badges-grid-box" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:0 14px;">
+            <!-- Rempli par JS -->
+          </div>
+
+          <!-- PITCH DECK & IDENTITÉ SIVIAA (PAGES DU PROJET) -->
+          <div style="font-family:var(--font-pixel); font-size:10px; color:var(--c-white); margin:18px 14px 6px;">
+            À PROPOS DE SIVIAA
+          </div>
+          <div style="padding:0 14px 14px; display:flex; flex-direction:column; gap:8px;">
+            <button class="p-btn p-btn-yellow" style="width:100%; text-align:left; font-size:8px; display:flex; justify-content:space-between; align-items:center;" onclick="openManifestoModal()">
+              <span>💡 S.I.VI.A.A & MANIFESTE</span>
+              <span>►</span>
+            </button>
+            <button class="p-btn p-btn-white" style="width:100%; text-align:left; font-size:8px; display:flex; justify-content:space-between; align-items:center;" onclick="openTeamAndMissionModal()">
+              <span>👥 L'ÉQUIPE & NOTRE MISSION RSE</span>
+              <span>►</span>
+            </button>
+            <button class="p-btn p-btn-purple" style="width:100%; text-align:left; font-size:8px; display:flex; justify-content:space-between; align-items:center;" onclick="openMarketMatrixModal()">
+              <span>⚔️ SIVIAA VS LE MARCHÉ (COMPARATEUR)</span>
+              <span>►</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BARRE DE NAVIGATION EN BAS (5 ONGLETS) -->
+    <div class="pixel-bottom-nav">
+      <button class="nav-tab-btn active" id="tab-btn-parcours" onclick="switchTab('parcours')">
+        <svg class="tab-ico" viewBox="0 0 10 10" shape-rendering="crispEdges">
+          <rect x="1" y="1" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
+          <rect x="3" y="3" width="4" height="4" fill="currentColor"/>
+        </svg>
+        <span>PARCOURS</span>
+      </button>
+
+      <button class="nav-tab-btn" id="tab-btn-budget" onclick="switchTab('budget')">
+        <svg class="tab-ico" viewBox="0 0 10 10" shape-rendering="crispEdges">
+          <rect x="2" y="1" width="6" height="8" fill="none" stroke="currentColor" stroke-width="1"/>
+          <rect x="4" y="3" width="2" height="4" fill="currentColor"/>
+        </svg>
+        <span>BUDGET</span>
+      </button>
+
+      <button class="nav-tab-btn" id="tab-btn-radar" onclick="switchTab('radar')">
+        <svg class="tab-ico" viewBox="0 0 10 10" shape-rendering="crispEdges">
+          <rect x="2" y="2" width="6" height="5" fill="currentColor"/>
+          <rect x="4" y="8" width="2" height="1" fill="currentColor"/>
+        </svg>
+        <span>RADAR</span>
+      </button>
+
+      <button class="nav-tab-btn" id="tab-btn-copilote" onclick="switchTab('copilote')">
+        <svg class="tab-ico" viewBox="0 0 10 10" shape-rendering="crispEdges">
+          <rect x="1" y="2" width="8" height="6" fill="currentColor"/>
+          <rect x="3" y="4" width="1" height="1" fill="#000"/>
+          <rect x="6" y="4" width="1" height="1" fill="#000"/>
+        </svg>
+        <span>COPILOTE</span>
+      </button>
+
+      <button class="nav-tab-btn" id="tab-btn-profil" onclick="switchTab('profil')">
+        <svg class="tab-ico" viewBox="0 0 10 10" shape-rendering="crispEdges">
+          <rect x="3" y="1" width="4" height="4" fill="currentColor"/>
+          <rect x="1" y="6" width="8" height="3" fill="currentColor"/>
+        </svg>
+        <span>PROFIL</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- BOÎTE MODALE RÉTRO -->
+  <div class="pixel-dialog-overlay" id="pixel-dialog">
+    <div class="pixel-dialog-box" id="pixel-dialog-content"></div>
+  </div>
+
+  <!-- ========================================================
+       8. CODE JS : MOTEUR PIXEL ART & GESTION DES DONNÉES
+       ======================================================== -->
+  <script>
+    /* ========================================================
+       A. MASCOTTE PIXEL ART ORIGINALE SIVIAA
+       ======================================================== */
+    const PERSONAS_CONFIG = {
+      aitana: {
+        name: "Aitana Bonmatí",
+        bio: "24 ans & travail · Veut se lancer seule",
+        bodyColor: "#ffd000",
+        bodyShade: "#c29b00",
+        hatColor: "#3a251a",
+        hatBand: "#634130"
+      },
+      mayulu: {
+        name: "Mayulu",
+        bio: "18 ans & vit seul · Étudiant en médecine",
+        bodyColor: "#ff7aa2",
+        bodyShade: "#c9466f",
+        hatColor: "#3a251a",
+        hatBand: "#634130"
+      },
+      theodora: {
+        name: "Theodora",
+        bio: "21 ans · Mère célibataire, travail & sans études",
+        bodyColor: "#f0f2f5",
+        bodyShade: "#bac2cc",
+        hatColor: "#3a251a",
+        hatBand: "#634130"
+      }
+    };
+
+    // Matrice pixel pour le poussin détective (20 colonnes x 18 lignes)
+    const MASCOT_PIXELS = [
+      "      hhhhhh        ",
+      "     hbbbbbbh       ",
+      "    hbbbbbbbbh      ",
+      "   hhhhhhhhhhhh     ",
+      "   hssssssssssh     ",
+      " hhhhhhhhhhhhhhhh   ",
+      "     yyyyyyyy       ",
+      "    yyyyyyyyyy      ",
+      "   yyeeyyyyyy     m ",
+      "   yyeeykyyyyy   mmm",
+      "   yyyyykyyyyy  mgw ",
+      "   yyyyybbbyyy  mgg ",
+      "   yyyyyyyyyyy  mgg ",
+      "    yyyyyyyyy    m  ",
+      "    yyyyyyyyy       ",
+      "    yy yyyyyy       ",
+      "    dd  dddddd      ",
+      "    ff  ff  ff      "
+    ];
+
+    function drawPixelMascot(canvas, personaKey) {
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const cfg = PERSONAS_CONFIG[personaKey] || PERSONAS_CONFIG.aitana;
+      
+      const rows = MASCOT_PIXELS.length;
+      const cols = MASCOT_PIXELS[0].length;
+      const pSize = Math.floor(Math.min(canvas.width / cols, canvas.height / rows));
+      const offX = Math.floor((canvas.width - cols * pSize) / 2);
+      const offY = Math.floor((canvas.height - rows * pSize) / 2);
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const colorLUT = {
+        'h': cfg.hatColor,
+        'b': cfg.hatBand,
+        's': '#1a0e08',
+        'y': cfg.bodyColor,
+        'd': cfg.bodyShade,
+        'e': '#000000',
+        'k': '#ffffff',
+        'f': '#ff7a00',
+        'm': '#1b1429',
+        'g': '#00d2ff',
+        'w': '#ffffff'
+      };
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const char = MASCOT_PIXELS[r][c];
+          if (char !== ' ' && colorLUT[char]) {
+            ctx.fillStyle = colorLUT[char];
+            ctx.fillRect(offX + c * pSize, offY + r * pSize, pSize, pSize);
+          }
+        }
+      }
+    }
+
+    /* ========================================================
+       B. SYNTHÉTISEUR AUDIO RÉTRO 8-BIT (WEB AUDIO)
+       ======================================================== */
+    let audioContext = null;
+    let isSoundMuted = false;
+
+    function play8BitTone(type) {
+      if (isSoundMuted) return;
+      try {
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioContext.state === 'suspended') audioContext.resume();
+
+        const now = audioContext.currentTime;
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        if (type === 'coin') {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(987.77, now);
+          osc.frequency.setValueAtTime(1318.51, now + 0.08);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        } else if (type === 'hit') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(140, now);
+          osc.frequency.setValueAtTime(90, now + 0.1);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else if (type === 'click') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(550, now);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
+          osc.start(now);
+          osc.stop(now + 0.04);
+        }
+      } catch (e) {}
+    }
+
+    function toggleSound() {
+      isSoundMuted = !isSoundMuted;
+      document.getElementById('sound-btn').textContent = isSoundMuted ? '🔇 SON:OFF' : '🔊 SON:ON';
+      if (!isSoundMuted) play8BitTone('coin');
+    }
+
+    /* ========================================================
+       C. DONNÉES ET ÉTAT PERSISTANT (LOCALSTORAGE)
+       ======================================================== */
+    const STORAGE_KEY = 'siviaa_pixel_app_data';
+
+    const INITIAL_STATE = {
+      xp: 90,
+      gems: 320,
+      streak: 5,
+      hearts: 5,
+      activePersona: 'aitana',
+      scores: [3, 0, 0],
+      badges: ['b_strat', 'b_flamme'],
+      pochettes: [
+        { id: 1, name: "Loyer & Charges", goal: 450, current: 450, priority: 1 },
+        { id: 2, name: "Fonds Urgence", goal: 500, current: 240, priority: 1 },
+        { id: 3, name: "Réparation Vélo", goal: 120, current: 80, priority: 2 },
+        { id: 4, name: "Voyage Été", goal: 600, current: 150, priority: 3 }
+      ],
+      subscriptions: [
+        { id: 1, name: "Netflix", cost: 13.49, day: 12, tip: "Passe sur l'offre avec pub à 5,99 € = 90 € / an d'économies." },
+        { id: 2, name: "Spotify", cost: 10.99, day: 24, tip: "Offre Spotify Étudiant disponible à 5,99 €." },
+        { id: 3, name: "Amazon Prime", cost: 6.99, day: 5, tip: "Prime Student offre 90 jours gratuits puis -50%." },
+        { id: 4, name: "Basic-Fit", cost: 29.99, day: 1, tip: "Possibilité de suspendre l'abonnement pour 5 € en pause." }
+      ]
+    };
+
+    let appData = loadAppData();
+
+    function loadAppData() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(INITIAL_STATE));
+    }
+
+    function saveAppData() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      } catch (e) {}
+    }
+
+    /* ========================================================
+       D. MODULE DE QUIZ ET QUESTIONS AUTHENTIQUES
+       ======================================================== */
+    const QUIZ_REPOSITORY = [
+      {
+        id: 0,
+        title: "Les bases du budget",
+        sub: "Répartir son argent entre loyer, courses et loisirs",
+        badge: "Stratège du budget",
+        badgeId: "b_strat",
+        questions: [
+          {
+            q: "C'est quoi un salaire ?",
+            sub: "Les principes fondamentaux de la rémunération",
+            options: [
+              "Une somme d'argent reçue gratuitement de l'État.",
+              "Un compte bancaire rémunéré géré par une banque.",
+              "Une somme versée à un salarié en échange de son travail.",
+              "Une taxe prélevée directement par la commune."
+            ],
+            ans: 2,
+            tip: "Le salaire rémunère une prestation contractuelle de travail. Il comprend le montant brut et le net après cotisations."
+          },
+          {
+            q: "Il te reste 90 € et tu as 60 € de courses. Combien garder pour tes loisirs ?",
+            sub: "Savoir prioriser les besoins vitaux avant les envies",
+            options: [
+              "90 € (les courses peuvent attendre la semaine suivante).",
+              "30 € maximum (90 € - 60 € = 30 € de disponible).",
+              "60 € en faisant un crédit à la consommation.",
+              "0 € car tout doit toujours être épargné."
+            ],
+            ans: 1,
+            tip: "Reste pour loisirs = Revenus restants - Dépenses obligatoires. Soit 90 € - 60 € = 30 €."
+          },
+          {
+            q: "Quelle dépense placer en priorité absolue dans ta Pochette 1 ?",
+            sub: "Ordre hiérarchique des charges de vie",
+            options: [
+              "Un pass pour un festival de musique le week-end.",
+              "Le paiement du loyer et des charges d'énergie.",
+              "La commande d'une nouvelle paire de baskets.",
+              "Un abonnement annuel à une salle de sport."
+            ],
+            ans: 1,
+            tip: "Le logement et l'alimentation sont prioritaires : couvrir son toit avant de financer les loisirs !"
+          }
+        ]
+      },
+      {
+        id: 1,
+        title: "Le réflexe épargne",
+        sub: "Prévoir un imprévu et financer un projet sereinement",
+        badge: "Gardien de l’épargne",
+        badgeId: "b_gardien",
+        questions: [
+          {
+            q: "Ton vélo ou ta trottinette tombe en panne. Quelle pochette doit couvrir ça ?",
+            sub: "Faire face aux pannes sans se mettre à découvert",
+            options: [
+              "La pochette 'Vacances & Plage'.",
+              "La pochette 'Fonds d'urgence & Imprévus'.",
+              "Souscrire un crédit revolving à 18%.",
+              "Attendre le prochain versement sans réparer."
+            ],
+            ans: 1,
+            tip: "Un fonds d'urgence de 300 € à 1000 € évite de basculer dans le découvert au premier aléa."
+          },
+          {
+            q: "Tu as déjà 40 € pour un achat à 100 €. À 15 €/mois, combien de mois ?",
+            sub: "Calculer son temps d'atteinte d'un objectif financier",
+            options: [
+              "2 mois.",
+              "3 mois.",
+              "4 mois (il manque 60 €, soit 4 x 15 €).",
+              "6 mois."
+            ],
+            ans: 2,
+            tip: "Montant manquant : 100 - 40 = 60 €. Avec 15 € par mois : 60 / 15 = 4 mois exactement."
+          },
+          {
+            q: "Pourquoi près de 65% des jeunes n'ont pas 100 € d'avance d'imprévus ?",
+            sub: "Comprendre les freins à la constitution d'une réserve",
+            options: [
+              "Parce que personne ne leur a appris à gérer leur budget.",
+              "À cause du cumul des micro-abonnements et de l'inflation.",
+              "Les deux : manque d'éducation financière et frais invisibles.",
+              "Parce que les livrets d'épargne sont interdits."
+            ],
+            ans: 2,
+            tip: "L'absence d'apprentissage à l'école et les micro-dépenses automatisées créent ce piège financier."
+          }
+        ]
+      },
+      {
+        id: 2,
+        title: "Décoder les impôts",
+        sub: "Vérifier ses justificatifs et ne plus avoir peur du fisc",
+        badge: "Détective fiscal",
+        badgeId: "b_fiscal",
+        questions: [
+          {
+            q: "Où se trouve l'espace officiel gratuit pour déclarer ses revenus ?",
+            sub: "Démarches administratives françaises",
+            options: [
+              "Sur le site officiel impots.gouv.fr.",
+              "Sur les réseaux sociaux avec un intermédiaire privé.",
+              "Uniquement au guichet d'une banque privée payante.",
+              "Dans un bureau de poste avec un chèque."
+            ],
+            ans: 0,
+            tip: "Le site officiel impots.gouv.fr avec FranceConnect est le seul espace sécurisé et gratuit."
+          },
+          {
+            q: "Un montant est prérempli sur ta déclaration. Ton premier réflexe ?",
+            sub: "Contrôle des pièces justificatives",
+            options: [
+              "Signer sans vérifier.",
+              "Le comparer avec le net imposable de ton bulletin de salaire de décembre.",
+              "Mettre 0 € pour tester le système.",
+              "Le supprimer sans justificatif."
+            ],
+            ans: 1,
+            tip: "Toujours vérifier avec le récapitulatif fiscal de ta fiche de paie de décembre pour éviter toute erreur."
+          },
+          {
+            q: "Tu lances une micro-entreprise. Quel organisme gère tes déclarations de CA ?",
+            sub: "Création d'activité & obligations légales",
+            options: [
+              "L'URSSAF (déclaration mensuelle ou trimestrielle).",
+              "La mairie de ton domicile.",
+              "Le rectorat de ton académie.",
+              "Pôle Emploi uniquement."
+            ],
+            ans: 0,
+            tip: "L'URSSAF encaisse les cotisations sociales des indépendants. Si tu ne fais pas de chiffre d'affaires, tu déclares 0 € et paies 0 € !"
+          }
+        ]
+      }
+    ];
+
+    let activeQuizObj = null;
+    let quizCurStep = 0;
+    let quizSelectedIdx = null;
+    let quizCurScore = 0;
+    let quizTimerId = null;
+    let quizSecLeft = 30;
+
+    function startQuiz(quizIdx) {
+      play8BitTone('click');
+      activeQuizObj = QUIZ_REPOSITORY[quizIdx];
+      quizCurStep = 0;
+      quizCurScore = 0;
+      quizSelectedIdx = null;
+
+      document.getElementById('view-parcours').classList.remove('active');
+      document.getElementById('view-quiz').classList.add('active');
+
+      loadQuizStep();
+    }
+
+    function loadQuizStep() {
+      const q = activeQuizObj.questions[quizCurStep];
+      document.getElementById('q-title-txt').textContent = q.q;
+      document.getElementById('q-sub-txt').textContent = q.sub;
+      document.getElementById('q-step-txt').textContent = `${quizCurStep + 1} / ${activeQuizObj.questions.length}`;
+
+      drawQuizScene(quizCurStep);
+
+      const box = document.getElementById('q-options-box');
+      box.innerHTML = '';
+      quizSelectedIdx = null;
+
+      q.options.forEach((optText, i) => {
+        const item = document.createElement('div');
+        item.className = 'pixel-choice-card';
+        item.innerHTML = `
+          <div class="pixel-radio-sq"></div>
+          <div>${optText}</div>
+        `;
+        item.onclick = () => selectOption(i, item);
+        box.appendChild(item);
+      });
+
+      const actBtn = document.getElementById('q-action-btn');
+      actBtn.textContent = 'CONFIRMER';
+      actBtn.disabled = true;
+
+      const hintBox = document.getElementById('q-hint-box');
+      hintBox.style.display = 'none';
+
+      // Lancer le chrono 30s
+      clearInterval(quizTimerId);
+      quizSecLeft = 30;
+      document.getElementById('q-timer-val').textContent = `${quizSecLeft}S`;
+      quizTimerId = setInterval(() => {
+        quizSecLeft--;
+        if (quizSecLeft <= 0) {
+          clearInterval(quizTimerId);
+          document.getElementById('q-timer-val').textContent = `0S`;
+          handleQuizSubmit();
+        } else {
+          document.getElementById('q-timer-val').textContent = `${quizSecLeft}S`;
+        }
+      }, 1000);
+    }
+
+    function selectOption(idx, el) {
+      if (document.getElementById('q-action-btn').textContent === 'CONTINUER ►') return;
+      play8BitTone('click');
+      quizSelectedIdx = idx;
+
+      document.querySelectorAll('.pixel-choice-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('q-action-btn').disabled = false;
+    }
+
+    function handleQuizSubmit() {
+      const actBtn = document.getElementById('q-action-btn');
+      const q = activeQuizObj.questions[quizCurStep];
+
+      if (actBtn.textContent === 'CONFIRMER') {
+        clearInterval(quizTimerId);
+        const cards = document.querySelectorAll('.pixel-choice-card');
+        const isRight = (quizSelectedIdx === q.ans);
+
+        if (isRight) {
+          quizCurScore++;
+          play8BitTone('coin');
+          if (quizSelectedIdx !== null && cards[quizSelectedIdx]) {
+            cards[quizSelectedIdx].classList.add('is-correct');
+          }
+        } else {
+          play8BitTone('hit');
+          if (quizSelectedIdx !== null && cards[quizSelectedIdx]) {
+            cards[quizSelectedIdx].classList.add('is-wrong');
+          }
+          if (cards[q.ans]) cards[q.ans].classList.add('is-correct');
+        }
+
+        const hint = document.getElementById('q-hint-box');
+        hint.style.display = 'block';
+        hint.innerHTML = `<b>${isRight ? '✔ BONNE DÉDUCTION !' : '✖ ERREUR DETECTÉE :'}</b><br>${q.tip}`;
+
+        actBtn.textContent = 'CONTINUER ►';
+      } else {
+        quizCurStep++;
+        if (quizCurStep < activeQuizObj.questions.length) {
+          loadQuizStep();
+        } else {
+          finishQuiz();
+        }
+      }
+    }
+
+    function finishQuiz() {
+      clearInterval(quizTimerId);
+      const earnedXp = quizCurScore * 10;
+      appData.xp += earnedXp;
+      appData.scores[activeQuizObj.id] = Math.max(appData.scores[activeQuizObj.id] || 0, quizCurScore);
+
+      const isPerfect = (quizCurScore === activeQuizObj.questions.length);
+      if (isPerfect && !appData.badges.includes(activeQuizObj.badgeId)) {
+        appData.badges.push(activeQuizObj.badgeId);
+      }
+
+      saveAppData();
+      play8BitTone('coin');
+
+      openPixelDialog(`
+        <div style="text-align:center;">
+          <div style="font-family:var(--font-pixel); font-size:12px; color:var(--c-purple-base); margin-bottom:8px;">
+            [ QUIZ TERMINÉ ]
+          </div>
+          <div style="font-family:var(--font-pixel); font-size:10px; margin-bottom:12px;">
+            SCORE : ${quizCurScore} / ${activeQuizObj.questions.length}
+          </div>
+          <p style="font-size:12px; line-height:1.4; margin-bottom:12px;">
+            Tu as engrangé <b>+${earnedXp} XP</b> pour ta progression financière !
+          </p>
+          ${isPerfect ? `
+            <div style="background:#fff3cc; border:2px solid #b88600; padding:8px; font-family:var(--font-pixel); font-size:8px; margin-bottom:12px;">
+              🏆 BADGE DÉBLOQUÉ :<br>${activeQuizObj.badge} !
+            </div>
+          ` : ''}
+          <button class="p-btn p-btn-yellow" style="width:100%;" onclick="closeQuizReturn()">
+            RETOUR AU PARCOURS
+          </button>
+        </div>
+      `);
+    }
+
+    function quitQuiz() {
+      if (confirm("Abandonner le quiz en cours ?")) {
+        clearInterval(quizTimerId);
+        closeQuizReturn();
+      }
+    }
+
+    function closeQuizReturn() {
+      closePixelDialog();
+      document.getElementById('view-quiz').classList.remove('active');
+      document.getElementById('view-parcours').classList.add('active');
+      renderAllUI();
+    }
+
+    function drawQuizScene(stepIdx) {
+      const cvs = document.getElementById('quiz-scene-canvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+      // Dessin pixel rétro selon la question
+      if (stepIdx === 0) {
+        // Panier de billets pixel
+        ctx.fillStyle = "#8c6b45";
+        ctx.fillRect(45, 55, 70, 40);
+        ctx.fillStyle = "#694c2d";
+        ctx.fillRect(40, 50, 80, 8);
+
+        // Billets verts
+        ctx.fillStyle = "#00e589";
+        ctx.fillRect(52, 28, 25, 22);
+        ctx.fillRect(80, 22, 28, 28);
+        ctx.fillStyle = "#008f55";
+        ctx.fillRect(58, 36, 12, 6);
+        ctx.fillRect(88, 32, 12, 8);
+      } else if (stepIdx === 1) {
+        // Tirelire cochon pixel
+        ctx.fillStyle = "#ff7aa2";
+        ctx.fillRect(50, 45, 60, 40);
+        ctx.fillRect(40, 52, 12, 14);
+        ctx.fillStyle = "#ffd000";
+        ctx.fillRect(72, 20, 16, 16);
+      } else {
+        // Document officiel d'impôts avec tampon
+        ctx.fillStyle = "#ede6ff";
+        ctx.fillRect(50, 15, 60, 80);
+        ctx.fillStyle = "#5300e8";
+        ctx.fillRect(58, 28, 44, 4);
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(58, 40, 36, 3);
+        ctx.fillRect(58, 50, 40, 3);
+        ctx.fillStyle = "#ff2a85";
+        ctx.fillRect(75, 65, 25, 20);
+      }
+    }
+
+    /* ========================================================
+       E. GESTION DU BUDGET, POCHETTES ET SLIDER
+       ======================================================== */
+    function renderPochettesUI() {
+      const c = document.getElementById('pochettes-list-container');
+      c.innerHTML = '';
+
+      appData.pochettes.forEach((p, idx) => {
+        const pct = Math.min(100, Math.round((p.current / p.goal) * 100));
+        const tagClass = p.priority === 1 ? 'p1' : (p.priority === 2 ? 'p2' : 'p3');
+        const tagLabel = p.priority === 1 ? 'P1 ESSENTIEL' : (p.priority === 2 ? 'P2 SÉCURITÉ' : 'P3 PLAISIR');
+
+        const el = document.createElement('div');
+        el.className = 'pochette-pixel-row';
+        el.innerHTML = `
+          <div class="pochette-header">
+            <span class="pochette-name">${p.name}</span>
+            <span class="pochette-tag ${tagClass}">${tagLabel}</span>
+          </div>
+          <div class="pochette-track">
+            <div class="pochette-fill" style="width:${pct}%;"></div>
+          </div>
+          <div class="pochette-footer">
+            <span>${p.current} € sur ${p.goal} € (${pct}%)</span>
+            <button class="p-btn p-btn-white" style="padding:4px 6px; font-size:7px;" onclick="fundPochetteDialog(${idx})">+ VERSER</button>
+          </div>
+        `;
+        c.appendChild(el);
+      });
+    }
+
+    function onOutingSliderChange(val) {
+      const v = Number(val);
+      document.getElementById('slider-display-val').textContent = `${v} €`;
+      const tip = document.getElementById('outing-tip-box');
+
+      if (v <= 5) {
+        tip.innerHTML = "💡 <b>Idée à 5 € :</b> Balade urbaine photo, expo en médiathèque municipale ou café à emporter au parc.";
+      } else if (v <= 15) {
+        tip.innerHTML = "💡 <b>Idée à 15 € :</b> Cinéma avec tarif étudiant (-26 ans) ou goûter gourmand partagé au parc !";
+      } else if (v <= 30) {
+        tip.innerHTML = "💡 <b>Idée à 30 € :</b> Session bowling entre potes, formule street-food ou entrée pour un concert associatif.";
+      } else {
+        tip.innerHTML = "💡 <b>Idée à 60 € :</b> Resto + activité. Pense d'abord à vérifier si ta Pochette 1 d'urgence a reçu son virement ce mois-ci !";
+      }
+    }
+
+    function openNewPochetteDialog() {
+      play8BitTone('click');
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; margin-bottom:10px;">CRÉER UNE POCHETTE</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <label style="font-size:11px; font-weight:700;">Nom de l'enveloppe
+            <input type="text" id="dlg-p-name" class="pixel-input-field" placeholder="Ex. Permis, Ordinateur">
+          </label>
+          <label style="font-size:11px; font-weight:700;">Objectif en Euros (€)
+            <input type="number" id="dlg-p-goal" class="pixel-input-field" placeholder="Ex. 300">
+          </label>
+          <label style="font-size:11px; font-weight:700;">Priorité
+            <select id="dlg-p-prio" class="pixel-input-field">
+              <option value="1">Priorité 1 · Essentiel (Toit, santé)</option>
+              <option value="2" selected>Priorité 2 · Sécurité (Imprévus)</option>
+              <option value="3">Priorité 3 · Plaisir (Loisirs, sorties)</option>
+            </select>
+          </label>
+          <button class="p-btn p-btn-yellow" style="margin-top:6px;" onclick="saveNewPochette()">VALIDER</button>
+          <button class="p-btn p-btn-white" onclick="closePixelDialog()">ANNULER</button>
+        </div>
+      `);
+    }
+
+    function saveNewPochette() {
+      const name = document.getElementById('dlg-p-name').value.trim();
+      const goal = Number(document.getElementById('dlg-p-goal').value);
+      const prio = Number(document.getElementById('dlg-p-prio').value);
+
+      if (!name || goal <= 0) {
+        alert("Nom ou objectif invalide !");
+        return;
+      }
+
+      appData.pochettes.push({
+        id: Date.now(),
+        name,
+        goal,
+        current: 0,
+        priority: prio
+      });
+
+      saveAppData();
+      play8BitTone('coin');
+      closePixelDialog();
+      renderPochettesUI();
+    }
+
+    function fundPochetteDialog(idx) {
+      play8BitTone('click');
+      const p = appData.pochettes[idx];
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; margin-bottom:10px;">ALIMENTER ${p.name}</div>
+        <p style="font-size:11px; margin-bottom:10px;">Solde actuel : <b>${p.current} €</b> / ${p.goal} €.</p>
+        <label style="font-size:11px; font-weight:700;">Montant à ajouter (€)
+          <input type="number" id="dlg-fund-val" class="pixel-input-field" value="25">
+        </label>
+        <button class="p-btn p-btn-yellow" style="width:100%; margin-top:10px;" onclick="executeFunding(${idx})">VERSER</button>
+        <button class="p-btn p-btn-white" style="width:100%; margin-top:6px;" onclick="closePixelDialog()">ANNULER</button>
+      `);
+    }
+
+    function executeFunding(idx) {
+      const val = Number(document.getElementById('dlg-fund-val').value);
+      if (val <= 0) return;
+      appData.pochettes[idx].current += val;
+      saveAppData();
+      play8BitTone('coin');
+      closePixelDialog();
+      renderPochettesUI();
+    }
+
+    function openExpenseDialog() {
+      play8BitTone('click');
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; margin-bottom:10px;">AJOUTER UNE DÉPENSE</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <label style="font-size:11px; font-weight:700;">Commerçant ou Libellé
+            <input type="text" id="dlg-e-name" class="pixel-input-field" placeholder="Ex. Courses Carrefour">
+          </label>
+          <label style="font-size:11px; font-weight:700;">Montant (€)
+            <input type="number" id="dlg-e-val" class="pixel-input-field" placeholder="28.40">
+          </label>
+          <button class="p-btn p-btn-yellow" style="margin-top:6px;" onclick="recordExpense()">ENREGISTRER</button>
+          <button class="p-btn p-btn-white" onclick="closePixelDialog()">ANNULER</button>
+        </div>
+      `);
+    }
+
+    function recordExpense() {
+      const n = document.getElementById('dlg-e-name').value.trim();
+      const a = Number(document.getElementById('dlg-e-val').value);
+      if (!n || a <= 0) return;
+      play8BitTone('coin');
+      closePixelDialog();
+      alert(`Dépense de ${a.toFixed(2)} € enregistrée et classée automatiquement !`);
+    }
+
+    function openCSVImportDialog() {
+      play8BitTone('click');
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; margin-bottom:10px;">IMPORT CSV BANCAIRE</div>
+        <p style="font-size:11px; line-height:1.4; margin-bottom:12px;">
+          Format attendu : <b>date ; libellé ; montant</b>.<br>
+          Siviaa classe chaque ligne automatiquement dans la bonne enveloppe.
+        </p>
+        <button class="p-btn p-btn-yellow" style="width:100%; margin-bottom:6px;" onclick="executeMockCSV()">CHARGER EXEMPLE RÉEL (14 OPÉRATIONS)</button>
+        <button class="p-btn p-btn-white" style="width:100%;" onclick="closePixelDialog()">FERMER</button>
+      `);
+    }
+
+    function executeMockCSV() {
+      play8BitTone('coin');
+      closePixelDialog();
+      alert("14 opérations bancaires importées : Loyer, Navigo, Courses, Spotify détectés avec succès !");
+    }
+
+    /* ========================================================
+       F. RADAR DES ABONNEMENTS ET EXPORT ICS
+       ======================================================== */
+    function renderSubsUI() {
+      const c = document.getElementById('subs-list-container');
+      c.innerHTML = '';
+      let sum = 0;
+
+      appData.subscriptions.forEach(sub => {
+        sum += sub.cost;
+        const el = document.createElement('div');
+        el.className = 'sub-pixel-item';
+        el.innerHTML = `
+          <div class="sub-pixel-top">
+            <span class="sub-brand">■ ${sub.name}</span>
+            <span class="sub-price">${sub.cost.toFixed(2)} €/m</span>
+          </div>
+          <div style="font-size:10px; color:#666;">Prélèvement le ${sub.day} du mois</div>
+          <div class="sub-pixel-tip">💡 ${sub.tip}</div>
+        `;
+        c.appendChild(el);
+      });
+
+      document.getElementById('subs-sum-val').textContent = `${sum.toFixed(2)} € / MOIS`;
+    }
+
+    function downloadICSFile() {
+      play8BitTone('coin');
+      const ics = [
+        "BEGIN:VCALENDAR",
+        "VERSION:2.0",
+        "PRODID:-//Siviaa//Radar Abonnements//FR",
+        "BEGIN:VEVENT",
+        "SUMMARY:Siviaa : Audit des abonnements mensuels",
+        "DESCRIPTION:Vérifie tes abonnements Netflix, Spotify et salle avant le prélèvement !",
+        "DTSTART:20261201T090000Z",
+        "END:VEVENT",
+        "END:VCALENDAR"
+      ].join("\r\n");
+
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "siviaa-echeances.ics";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }
+
+    /* ========================================================
+       G. COPILOTE IA DÉTECTIVE SIVIAA
+       ======================================================== */
+    const ANSWERS_DB = {
+      impots: "Pour déclarer tes impôts en tant que jeune : va sur <b>impots.gouv.fr</b>. Vérifie la case <b>1AJ</b> avec ta dernière fiche de paie de décembre. Si tu as moins de 25 ans et que tu étais étudiant, tes jobs d'été sont exonérés jusqu'à 3 fois le SMIC !",
+      micro: "Pour créer ta micro-entreprise : utilise uniquement <b>formalites.entreprises.gouv.fr</b> (Guichet unique INPI). Demande l'<b>ACRE</b> dans les 45 jours pour payer moitié moins de cotisations la 1ère année. Si 0 € de CA = 0 € de cotisations !",
+      epargne: "La règle fondamentale : applique le <b>50 / 30 / 20</b>. 50% pour vivre (loyer, courses), 30% pour tes envies, et 20% placés immédiatement dès que ton virement de salaire ou de bourse arrive.",
+      urssaf: "Avec l'URSSAF : déclare ton CA tous les mois ou tous les trimestres, même s'il est de 0 €. Oublier de déclarer entraîne une pénalité forfaitaire inutile de 55 € !",
+      acre: "L'<b>ACRE</b> (Aide aux Créateurs d'Entreprise) t'accorde 50% d'exonération de cotisations sociales pendant tes 12 premiers mois ! Dépose ton dossier dans les 45 jours après la création sur formalites.entreprises.gouv.fr.",
+      declarer_ca: "Sur <b>autoentrepreneur.urssaf.fr</b> : déclare ton CA brut réellement encaissé. Si tu as encaissé 0 €, déclare 0 €. Ne rate pas l'échéance sous peine d'une pénalité de 55 € !",
+      freelance_budget: "En freelance, isole immédiatement <b>25% de chaque encaissement</b> sur un compte dédié pour l'URSSAF et l'impôt libératoire. Le reste suit la règle 50/30/20 pour sécuriser ta trésorerie !",
+      bourse_apl: "Fais ta demande d'<b>APL sur caf.fr</b> dès la signature du bail (sans attendre l'état des lieux). Pour la bourse CROUS, surveille le versement le 5 du mois et paie tes repas avec Izly !",
+      repas_crous: "En tant qu'étudiant boursier, tes repas dans les Restos U du CROUS coûtent seulement <b>1,00 €</b> (plat complet + entrée/dessert) ! C'est plus de 160 € d'économies par mois.",
+      abos_etudiant: "Active tes réductions étudiantes : <b>Spotify/Deezer à 5,99 €/m</b>, <b>Amazon Prime Student à 34,95 €/an</b> (avec 90 jours offerts) et <b>Apple Music Étudiant</b> avec Apple TV+ inclus !",
+      job_etudiant: "Tes salaires de job étudiant sont <b>exonérés d'impôt jusqu'à 3 fois le SMIC mensuel brut (~5 200 € / an)</b> si tu avais moins de 26 ans au 1er janvier !",
+      aides_caf: "En tant que parent isolé : vérifie l'<b>ASF</b> (~190 €/m), le <b>CMG</b> pour la garde et la prime d'activité majorée sur le simulateur officiel caf.fr.",
+      budget_bebe: "Pour le budget bébé : privilégie les bourses de puériculture, Vinted et la seconde main pour économiser 70%. Pour les couches et produits de soin, commande en pack d'abonnement.",
+      case_t_impots: "Sur ta déclaration de revenus, coche impérativement la <b>Case T (Parent isolé)</b> ! Elle t'accorde une demi-part fiscale supplémentaire, ce qui annule ou réduit drastiquement tes impôts.",
+      fonds_urgence: "Près de 65% des jeunes n'ont pas 100 € de réserve. Verse <b>5 € à 10 € chaque semaine</b> dans une pochette 'Bouclier Imprévus' sur un Livret A pour ne plus jamais stresser face à une facture imprévue !"
+    };
+
+    const PERSONA_CHAT_PROMPTS = {
+      aitana: [
+        { label: "ACRE & DÉBUTS", key: "acre" },
+        { label: "DÉCLARER MON CA", key: "declarer_ca" },
+        { label: "50/30/20 FREELANCE", key: "freelance_budget" },
+        { label: "PIÈGES URSSAF", key: "urssaf" }
+      ],
+      mayulu: [
+        { label: "BOURSE & APL", key: "bourse_apl" },
+        { label: "REPAS 1€ & COURSES", key: "repas_crous" },
+        { label: "ABOS ÉTUDIANT", key: "abos_etudiant" },
+        { label: "JOB ÉTUDIANT IMPÔTS", key: "job_etudiant" }
+      ],
+      theodora: [
+        { label: "AIDES CAF & GARDE", key: "aides_caf" },
+        { label: "BUDGET BÉBÉ", key: "budget_bebe" },
+        { label: "CASE T PARENT ISOLÉ", key: "case_t_impots" },
+        { label: "FONDS D'URGENCE 100€", key: "fonds_urgence" }
+      ]
+    };
+
+    const PERSONA_GREETINGS = {
+      aitana: "Salut <b>Aitana</b> ! Prête à te lancer seule ? Je t'aide à monter ta boîte, optimiser tes charges ACRE et sécuriser ta trésorerie pro & perso !",
+      mayulu: "Salut <b>Mayulu</b> ! La première année de médecine seul, c'est intense. Je suis là pour t'éviter les découverts, chasser les abonnements et débloquer tes aides étudiantes !",
+      theodora: "Salut <b>Theodora</b> ! En tant que maman qui travaille, chaque euro compte. Je te guide pas à pas pour tes aides CAF, ta déclaration d'impôts et ton bouclier d'urgence !"
+    };
+
+    function renderCopilotChips(personaKey) {
+      const container = document.getElementById('copilot-chips-container');
+      if (!container) return;
+      const questions = PERSONA_CHAT_PROMPTS[personaKey] || PERSONA_CHAT_PROMPTS.aitana;
+      container.innerHTML = '';
+      questions.forEach(q => {
+        const btn = document.createElement('button');
+        btn.className = 'pixel-quick-chip';
+        btn.textContent = q.label;
+        btn.onclick = () => askCopilot(q.key);
+        container.appendChild(btn);
+      });
+    }
+
+    function askCopilot(key) {
+      const qText = {
+        impots: "Comment déclarer mes impôts jeune actif ?",
+        micro: "Comment créer ma micro-entreprise ?",
+        epargne: "Combien mettre de côté chaque mois ?",
+        urssaf: "Quels sont les pièges à éviter avec l'URSSAF ?",
+        acre: "Comment bénéficier de l'ACRE pour ma boîte ?",
+        declarer_ca: "Comment déclarer mon CA à l'URSSAF ?",
+        freelance_budget: "Comment répartir son budget en freelance ?",
+        bourse_apl: "Comment obtenir la bourse et les APL ?",
+        repas_crous: "Comment profiter des repas CROUS à 1 € ?",
+        abos_etudiant: "Quels sont les meilleurs abonnements étudiants ?",
+        job_etudiant: "Mes jobs étudiants sont-ils imposables ?",
+        aides_caf: "Quelles aides CAF pour parent isolé ?",
+        budget_bebe: "Comment optimiser le budget bébé / enfant ?",
+        case_t_impots: "C'est quoi la case T sur les impôts ?",
+        fonds_urgence: "Comment créer son fonds d'urgence de 100 € ?"
+      }[key] || key;
+
+      addChatMessage(qText, 'user');
+      setTimeout(() => {
+        addChatMessage(ANSWERS_DB[key] || "Je te conseille d'ordonner tes dépenses dans tes pochettes de priorité pour garder au moins 100 € d'avance d'imprévus !", 'bot');
+        play8BitTone('coin');
+      }, 350);
+    }
+
+    function submitChatMessage() {
+      const input = document.getElementById('chat-input-box');
+      const val = input.value.trim();
+      if (!val) return;
+      input.value = '';
+
+      addChatMessage(val, 'user');
+      const lower = val.toLowerCase();
+      let key = 'epargne';
+      if (lower.includes('impôt') || lower.includes('fisc')) key = 'impots';
+      else if (lower.includes('micro') || lower.includes('auto') || lower.includes('boîte') || lower.includes('entreprise')) key = 'micro';
+      else if (lower.includes('urssaf') || lower.includes('cotisation')) key = 'urssaf';
+
+      setTimeout(() => {
+        addChatMessage(ANSWERS_DB[key], 'bot');
+        play8BitTone('coin');
+      }, 400);
+    }
+
+    function addChatMessage(txt, sender) {
+      const box = document.getElementById('chat-stream-box');
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble-pixel ${sender}`;
+      bubble.innerHTML = txt;
+      box.appendChild(bubble);
+      box.scrollTop = box.scrollHeight;
+      play8BitTone('click');
+    }
+
+    /* ========================================================
+       H. BADGES ET PERSONAS
+       ======================================================== */
+    const ALL_BADGES_DATA = [
+      { id: 'b_strat', title: 'Stratège budget', desc: 'Maîtrise de la répartition 50/30/20' },
+      { id: 'b_gardien', title: 'Gardien épargne', desc: 'Bouclier anti-imprévus constitué' },
+      { id: 'b_fiscal', title: 'Détective fiscal', desc: 'Maîtrise de la déclaration d’impôts' },
+      { id: 'b_flamme', title: 'Flamme 5 jours', desc: 'Série de connexion ininterrompue' },
+      { id: 'b_radar', title: 'Chasseur d’abos', desc: 'Audit complet des prélèvements' },
+      { id: 'b_invest', title: 'Futur Investisseur', desc: 'Niveau 3 débloqué' }
+    ];
+
+    function renderBadgesUI() {
+      const box = document.getElementById('badges-grid-box');
+      box.innerHTML = '';
+
+      ALL_BADGES_DATA.forEach(b => {
+        const isUnlocked = appData.badges.includes(b.id);
+        const card = document.createElement('div');
+        card.className = 'p-card';
+        card.style.margin = '0';
+        card.style.textAlign = 'center';
+        if (!isUnlocked) card.style.opacity = '0.5';
+
+        card.innerHTML = `
+          <div style="font-size:22px; margin-bottom:4px;">${isUnlocked ? '🏆' : '🔒'}</div>
+          <div style="font-family:var(--font-pixel); font-size:7px; margin-bottom:4px;">${b.title}</div>
+          <div style="font-size:9px; color:#555;">${b.desc}</div>
+        `;
+        box.appendChild(card);
+      });
+    }
+
+    function setPersonaKey(key) {
+      appData.activePersona = key;
+      saveAppData();
+      play8BitTone('click');
+
+      const cfg = PERSONAS_CONFIG[key];
+      document.getElementById('p-name-txt').textContent = cfg.name;
+      document.getElementById('p-bio-txt').textContent = cfg.bio;
+
+      drawPixelMascot(document.getElementById('mascot-header'), key);
+      drawPixelMascot(document.getElementById('copilot-avatar-canvas'), key);
+      drawPixelMascot(document.getElementById('profile-avatar-canvas'), key);
+
+      ['aitana', 'mayulu', 'theodora'].forEach(k => {
+        const btn = document.getElementById(`btn-persona-${k}`);
+        if (btn) {
+          if (k === key) {
+            btn.className = 'p-btn p-btn-yellow';
+            btn.style.boxShadow = '2px 2px 0 #000';
+          } else {
+            btn.className = 'p-btn p-btn-white';
+            btn.style.boxShadow = '4px 4px 0 #000';
+          }
+        }
+      });
+
+      renderCopilotChips(key);
+
+      if (PERSONA_GREETINGS[key]) {
+        addChatMessage(PERSONA_GREETINGS[key], 'bot');
+      }
+    }
+
+    function openManifestoModal() {
+      play8BitTone('coin');
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; color:var(--c-purple-base); margin-bottom:8px; border-bottom:2px solid #000; padding-bottom:4px;">
+          💡 MANIFESTE SIVIAA
+        </div>
+        <div style="font-family:var(--font-pixel); font-size:7px; color:#555; margin-bottom:8px;">
+          "TON ARGENT, TES PROJETS, TA LIBERTÉ"
+        </div>
+        <div style="display:flex; flex-direction:column; gap:6px; font-size:10px; margin-bottom:12px;">
+          <div style="background:#f4efff; border:2px solid #000; padding:6px;">
+            <span style="font-family:var(--font-pixel); color:var(--c-purple-base); font-size:8px;">S : SAVOIR</span><br>
+            Comprendre les règles financières pour ne plus subir l'angoisse des fins de mois.
+          </div>
+          <div style="background:#fff7d9; border:2px solid #000; padding:6px;">
+            <span style="font-family:var(--font-pixel); color:var(--c-yellow-dark); font-size:8px;">I : INDÉPENDANCE</span><br>
+            Sortir de la dépendance aux découverts bancaires et aux crédits conso toxiques.
+          </div>
+          <div style="background:#ffd9e8; border:2px solid #000; padding:6px;">
+            <span style="font-family:var(--font-pixel); color:var(--c-pink-dark); font-size:8px;">VI : VIE</span><br>
+            Profiter de sa jeunesse tout en sécurisant ses projets personnels et pro.
+          </div>
+          <div style="background:#d9fbeb; border:2px solid #000; padding:6px;">
+            <span style="font-family:var(--font-pixel); color:var(--c-mint-dark); font-size:8px;">A : AUTONOMIE</span><br>
+            Gérer seul(e) ses impôts, aides et démarches sans intermédiaire payant.
+          </div>
+          <div style="background:#e0f5ff; border:2px solid #000; padding:6px;">
+            <span style="font-family:var(--font-pixel); color:#0077b6; font-size:8px;">A : AVENIR</span><br>
+            Bâtir son premier capital et concrétiser ses rêves d'indépendance.
+          </div>
+        </div>
+        <div style="background:#000; color:var(--c-yellow); font-family:var(--font-pixel); font-size:7px; padding:6px; line-height:1.4; margin-bottom:10px;">
+          ⚠️ 65% des jeunes n'ont même pas 100 € de côté face aux imprévus. Siviaa est là pour inverser la tendance !
+        </div>
+        <button class="p-btn p-btn-yellow" style="width:100%;" onclick="closePixelDialog()">CONTINUER LA MISSION</button>
+      `);
+    }
+
+    function openTeamAndMissionModal() {
+      play8BitTone('coin');
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; color:var(--c-purple-base); margin-bottom:6px; border-bottom:2px solid #000; padding-bottom:4px;">
+          👥 L'ÉQUIPE SIVIAA
+        </div>
+        <div style="font-size:10px; line-height:1.4; margin-bottom:10px;">
+          <div style="margin-bottom:6px; border-left:3px solid var(--c-purple-base); padding-left:6px;">
+            <b>SARRA</b><br>
+            <span style="font-size:9px; color:#555;">Président-Directeur Général · Vision & Partenariats</span>
+          </div>
+          <div style="margin-bottom:6px; border-left:3px solid var(--c-yellow-dark); padding-left:6px;">
+            <b>SIMON-PIERRE</b><br>
+            <span style="font-size:9px; color:#555;">Responsable Financier · Modèle économique & Éthique</span>
+          </div>
+          <div style="margin-bottom:8px; border-left:3px solid var(--c-pink); padding-left:6px;">
+            <b>VIVIANE</b><br>
+            <span style="font-size:9px; color:#555;">Responsable Communication Visuelle · DA Pixel & Branding</span>
+          </div>
+        </div>
+
+        <div style="font-family:var(--font-pixel); font-size:8px; margin-bottom:6px; color:#000;">
+          🌍 ENGAGEMENTS RSE & GREEN IT
+        </div>
+        <div style="font-size:9px; color:#444; line-height:1.4; background:#f4efff; border:2px solid #000; padding:6px; margin-bottom:10px;">
+          • <b>Inclusion globale :</b> Réduction des inégalités sociales et économiques.<br>
+          • <b>Green IT :</b> Code ultra-léger, serveurs vertueux & énergies renouvelables.<br>
+          • <b>Confidentialité (RGPD) :</b> Respect total de la vie privée, zéro revente de données.
+        </div>
+
+        <div style="font-size:9px; background:#000; color:#fff; padding:6px; margin-bottom:10px; font-family:var(--font-body);">
+          🌐 <b>Siviaa.fr</b> · 📧 <b>Siviaa@contact.fr</b><br>
+          📞 <b>06 24 57 88 92 71</b> · 📱 <b>@Siviaa</b>
+        </div>
+
+        <button class="p-btn p-btn-white" style="width:100%;" onclick="closePixelDialog()">FERMER</button>
+      `);
+    }
+
+    function openMarketMatrixModal() {
+      play8BitTone('coin');
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:9px; color:var(--c-purple-base); margin-bottom:6px; border-bottom:2px solid #000; padding-bottom:4px;">
+          ⚔️ SIVIAA VS LE MARCHÉ
+        </div>
+        <p style="font-size:9px; color:#555; margin-bottom:6px;">Comparaison des approches sur 6 piliers clés (Pitch Slide 4) :</p>
+        
+        <table class="pixel-table">
+          <thead>
+            <tr>
+              <th>Fonctionnalité</th>
+              <th>SIVIAA</th>
+              <th>XTB</th>
+              <th>Rocket</th>
+              <th>Banques</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Coaching & Gamification</td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+            </tr>
+            <tr>
+              <td>Accompagnement Hybride</td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+            </tr>
+            <tr>
+              <td>Gestion Pro + Perso</td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+            </tr>
+            <tr>
+              <td>Démarches Admin & Fiscales</td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+            </tr>
+            <tr>
+              <td>Gestion d'Abonnements</td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+            </tr>
+            <tr>
+              <td>Suivi & Catégorisation</td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+              <td><span class="tag-oui">✔ OUI</span></td>
+              <td><span class="tag-non">✖ NON</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style="font-size:9px; color:#333; margin-bottom:8px; line-height:1.3;">
+          💡 <b>Verdict :</b> Siviaa combine coaching gamifié, fiscalité jeune et démarches pro dans une app pensée pour les 18-25 ans.
+        </div>
+
+        <button class="p-btn p-btn-yellow" style="width:100%;" onclick="closePixelDialog()">FERMER</button>
+      `);
+    }
+
+    const BANK_DETAILS = {
+      greengot: {
+        title: "GREEN-GOT",
+        badge: "0% FOSSILE · IMPACT CLIMAT",
+        desc: "Néobanque indépendante française certifiée B-Corp. Chaque euro déposé finance exclusivement la transition écologique (solaire, éolien, régénération des forêts) et zéro centime n'est investi dans les hydrocarbures.",
+        perks: "• Carte en bois ou plastique recyclé<br>• Calculateur d'empreinte carbone en temps réel<br>• 100% mobile et transparent"
+      },
+      helios: {
+        title: "HELIOS",
+        badge: "ÉCO-BANQUE ENGAGÉE",
+        desc: "Éco-banque française dédiée au financement de la transition écologique. Helios garantit que tes économies protègent la biodiversité et financent la rénovation énergétique.",
+        perks: "• Compte jeune (-24 ans) accessible<br>• Épargne avenir climat sécurisée<br>• Zéro euro vers les industries polluantes"
+      },
+      lanef: {
+        title: "LA NEF",
+        badge: "COOPÉRATIVE CITOYENNE",
+        desc: "Pionnière de la finance éthique en France depuis plus de 30 ans. La Nef est la seule institution financière à publier chaque année 100% de la liste intégrale des projets financés.",
+        perks: "• Transparence citoyenne intégrale<br>• Sociétariat coopératif accessible<br>• Prêts dédiés à l'économie sociale et solidaire"
+      },
+      bnp: {
+        title: "BNP PARIBAS JEUNES",
+        badge: "PARTENAIRE ÉTUDIANT",
+        desc: "Grand réseau partenaire des universités françaises avec des facilités bancaires dédiées aux étudiants et jeunes actifs.",
+        perks: "• Prêt permis de conduire à 1 € par jour<br>• Avances de trésorerie sur bourses de rentrée<br>• Assurances logement étudiant négociées"
+      }
+    };
+
+    function openEthicalBankModal(bankKey) {
+      play8BitTone('coin');
+      const b = BANK_DETAILS[bankKey];
+      if (!b) return;
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; color:var(--c-purple-base); margin-bottom:4px;">
+          ${b.title}
+        </div>
+        <div style="margin-bottom:8px;">
+          <span class="pixel-tag-green">${b.badge}</span>
+        </div>
+        <p style="font-size:11px; line-height:1.4; margin-bottom:10px; color:#222;">
+          ${b.desc}
+        </p>
+        <div style="background:#f4efff; border:2px solid #000; padding:8px; font-size:10px; line-height:1.4; margin-bottom:12px;">
+          <b>BONS PLANS JEUNES :</b><br>
+          ${b.perks}
+        </div>
+        <button class="p-btn p-btn-yellow" style="width:100%;" onclick="closePixelDialog()">D'ACCORD</button>
+      `);
+    }
+
+    /* ========================================================
+       I. NAVIGATION, MODALES ET INITIALISATION
+       ======================================================== */
+    function switchTab(tabId) {
+      play8BitTone('click');
+      document.querySelectorAll('.view-screen').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+
+      const targetView = document.getElementById(`view-${tabId}`);
+      const targetBtn = document.getElementById(`tab-btn-${tabId}`);
+
+      if (targetView) targetView.classList.add('active');
+      if (targetBtn) targetBtn.classList.add('active');
+
+      document.getElementById('app-viewport').scrollTop = 0;
+    }
+
+    function openPixelDialog(html) {
+      document.getElementById('pixel-dialog-content').innerHTML = html;
+      document.getElementById('pixel-dialog').style.display = 'flex';
+    }
+
+    function closePixelDialog() {
+      document.getElementById('pixel-dialog').style.display = 'none';
+    }
+
+    function openChestBonus() {
+      play8BitTone('coin');
+      openPixelDialog(`
+        <div style="text-align:center;">
+          <div style="font-family:var(--font-pixel); font-size:12px; color:var(--c-yellow-dark); margin-bottom:8px;">
+            [ COFFRE SECRET OUVERT ]
+          </div>
+          <p style="font-size:12px; line-height:1.4; margin-bottom:12px;">
+            Bravo ! Tu as trouvé la planque secrète de Siviaa.<br>
+            Tu reçois <b>+25 Gemmes</b> et <b>+30 XP</b> !
+          </p>
+          <button class="p-btn p-btn-yellow" style="width:100%;" onclick="appData.gems+=25; appData.xp+=30; saveAppData(); renderAllUI(); closePixelDialog();">
+            ENCAISSER
+          </button>
+        </div>
+      `);
+    }
+
+    function openMemo503020() {
+      play8BitTone('click');
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; margin-bottom:10px;">FICHE MÉMO : RÈGLE 50/30/20</div>
+        <div style="display:flex; flex-direction:column; gap:8px; font-size:11px; line-height:1.4;">
+          <div style="background:#fff3cc; border:2px solid #000; padding:6px;">
+            <b>50% BESOINS VITAUX :</b> Loyer, charges, alimentation de base, transport travail.
+          </div>
+          <div style="background:#ffd9e8; border:2px solid #000; padding:6px;">
+            <b>30% ENVIES & SORTIES :</b> Restaurants, concerts, abonnements de streaming choisis.
+          </div>
+          <div style="background:#d9fbeb; border:2px solid #000; padding:6px;">
+            <b>20% ÉPARGNE & FUTUR :</b> Réserve pour les pannes et projets d'avenir.
+          </div>
+          <button class="p-btn p-btn-purple" style="margin-top:6px;" onclick="closePixelDialog()">BIEN COMPRIS</button>
+        </div>
+      `);
+    }
+
+    function openModuleInfo() {
+      play8BitTone('click');
+      openPixelDialog(`
+        <div style="font-family:var(--font-pixel); font-size:10px; margin-bottom:8px;">MONDE 01 · LES BASES</div>
+        <p style="font-size:11px; line-height:1.4; margin-bottom:12px;">
+          L'objectif de ce monde est de t'assurer un bouclier financier d'au moins 100 € pour ne plus jamais stresser face à un imprévu.
+        </p>
+        <button class="p-btn p-btn-yellow" style="width:100%;" onclick="closePixelDialog()">CONTINUER</button>
+      `);
+    }
+
+    function lockedPrompt() {
+      play8BitTone('hit');
+      openPixelDialog(`
+        <div style="text-align:center;">
+          <div style="font-family:var(--font-pixel); font-size:10px; margin-bottom:8px;">🔒 NIVEAU VERROUILLÉ</div>
+          <p style="font-size:11px; line-height:1.4; margin-bottom:12px;">
+            Termine les 3 premiers quiz pour débloquer le simulateur micro-entreprise et investissement !
+          </p>
+          <button class="p-btn p-btn-white" style="width:100%;" onclick="closePixelDialog()">OK</button>
+        </div>
+      `);
+    }
+
+    function renderAllUI() {
+      document.getElementById('stat-streak').textContent = appData.streak;
+      document.getElementById('stat-gems').textContent = appData.gems;
+      document.getElementById('stat-hearts').textContent = appData.hearts;
+      document.getElementById('p-xp-txt').textContent = `${appData.xp} XP`;
+
+      if (appData.scores[0] === 3) {
+        document.getElementById('node-q-0').className = 'pixel-node done';
+      }
+      if (appData.scores[1] === 3) {
+        document.getElementById('node-q-1').className = 'pixel-node done';
+      }
+
+      renderPochettesUI();
+      renderSubsUI();
+      renderBadgesUI();
+      setPersonaKey(appData.activePersona || 'aitana');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAllUI();
+    });
+  </script>
+</body>
+</html>
